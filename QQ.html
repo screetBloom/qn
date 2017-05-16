@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+
+</head>
+<body>
+
+<input type="text" id="url" style="display: none">
+
+<button id="btn" style="width: 100px;height: 50px" >上传图片</button>
+
+<img src="" id="loc_img" style="width: 200px;height: 200px" />
+
+
+    <script>
+        var _cfg = {};
+        _cfg.qn = {
+        uptoken:"um6IEH7mtwnwkGpjImD08JdxlvViuELhI4mFfoeL:zPVaMyRvtEgsfbKKuIPpMobH6nc=:eyJzY29wZSI6ImphdmFkZW1vIiwiZGVhZGxpbmUiOjIzNjY1NjI3MjZ9Cg==",
+         domain:'http://7xl4c6.com1.z0.glb.clouddn.com/',
+        };
+        var _pielib = {};
+        _pielib.uuid = function uniqueId(prefix) {
+            var ts = Number(new Date()).toString(36)
+            var rd = Number(String(Math.random()).replace('.', '')).toString(36);
+            var res = ts + '-' + rd;
+            if
+            (prefix) res = prefix + '-' + res;
+            return res;
+        };
+        _pielib.uploadFileQnRd = function (token,file,success, error, complete){
+            var useargs = (token.constructor != String);
+            if (useargs) token = arguments.token;
+            if (!token) {
+                __errhdlr(new Error('_pielib.uploadFileQnRd:token undefined.'))
+                return;
+            };
+            if (useargs) file = arguments.file;
+            if (!file) {
+                __errhdlr(new Error('_pielib.uploadFileQnRd:file undefined.'))
+                return;
+            };
+
+            var domain = _cfg.qn.domain;
+            var formdata = new FormData();
+            formdata.append('token', token);
+            formdata.append('file', file);
+            var set = {
+                url: "http://up.qiniu.com",
+                data: formdata,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+            };
+            if (useargs) success = arguments.success;
+            if (success) set.success = success;
+            if (useargs) error = arguments.error;
+            if (error) set.error = error;
+            if (useargs) complete = arguments.complete;
+            if (complete) set.complete = complete;
+            var xhr = $.ajax(set);
+            xhr.file = file;
+            xhr.domain = domain;
+            return xhr;
+        }
+
+        //修改
+        $('#btn').click(function () {
+            alert("上传头像按钮被点击")
+            var btnjo=$('#btn');
+            var filejo = btnjo.siblings('#uploadFileInput');
+            filejo.remove();
+            filejo = $('<input accept="image/jpeg,image/jpg,image/png" id="uploadFileInput" type="file" style="display: none">').appendTo(btnjo);
+            btnjo.after(filejo);
+            filejo.bind('change', function () {
+                var fileobjs = filejo.get(0).files;
+
+                var domain = _cfg.qn.domain;
+                var f = fileobjs[0];
+                var  xhrid = _pielib.uuid();
+                var xhr = {};
+                xhr.file =f;
+                console.log(xhr.file );
+                xhr.id = xhr.file.id = f.id = xhrid;
+
+                console.log("获取到的xhr：："+JSON.stringify(xhr));
+                console.log("f:"+JSON.stringify(f));
+                console.log("xhr.file:"+xhr.file);
+
+                    xhr = _pielib.uploadFileQnRd(
+                        _cfg.qn.uptoken,
+                        f,
+                        function (res) {
+                            res['success'] = true;
+                            f.url = res.url = res['file_path'] = domain + res.key;
+                            res['msg'] = 'upload ok.';
+
+                            //给input框显示url内容
+                            $('#url').attr('value',f.url);
+                            //给图片添加 src属性
+                            $('#loc_img').attr('src',f.url)
+                            //将原本隐藏的input显示出来
+                            $('#url').show();
+
+                        },
+                        function (f, err) {
+                            console.log(f+"error")
+                        },
+                        function (xhr, status) {
+                            filejo.remove();
+                        },
+                        domain
+                    );
+                console.log(JSON.stringify(xhr)+"99999");
+
+                var file = this.files[0];
+                console.log("文件大小:"+(file.size / 1024).toFixed(1)+"kB");
+
+                if (window.FileReader) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onloadend = function (e) {
+        };
+                }
+
+
+            });
+            //模拟刚 添加的按钮被点击
+            filejo.click();
+        })
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
