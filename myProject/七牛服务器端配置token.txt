@@ -1,0 +1,78 @@
+
+
+
+1.npm install qiniu
+
+
+2.写个配置文件
+var xconf={};
+
+xconf.qiniu={
+    ACCESS_KEY: "1JtRBM3GsKOtRanElwUwSj4BGMGNONDCmORs3x3S",
+    SECRET_KEY: "y6OV_xsYxlSbKs9yXHVAdFi6qXYgWWCnrcep5bQj",
+    BucketName: "test",
+    BucketDomain: "http://test.10knet.com/",
+};
+
+module.exports=xconf;
+
+3.启动七牛
+	a: 引入七牛,导入七牛包    global.$qiniu=require('qiniu');
+				
+	b:导入配置文件	  global.__xconf = require('../config/qiniuconf.js');
+
+	c:导入到app.js  AK、SK
+	   $qiniu.conf.ACCESS_KEY = __xconf.qiniu.ACCESS_KEY;
+	   $qiniu.conf.SECRET_KEY = __xconf.qiniu.SECRET_KEY;
+
+	d:引入js	require('../api/qiniu/qiniutoken.js');
+	
+	e：监听启动端口	app.listen(19110);
+
+
+4.写个生成token的函数
+
+function qn_genUploadToken() {
+    var pubPutPolicy = new $qiniu.rs.PutPolicy('test');
+    pubPutPolicy.returnBody = '{"name": $(fname),"size": $(fsize),"type": $(mimeType),"color": $(exif.ColorSpace.val),"key":$(key),"w": $(imageInfo.width),"h": $(imageInfo.height),"hash": $(etag)}';
+    var token = pubPutPolicy.token();
+    return token;
+};
+
+
+5.写个接口
+
+__apis.token = async function (ctx, next) {
+
+    //var key=ctx.request.body.key;
+    //
+    console.log(__xconf);
+
+    var tn=qn_genUploadToken();
+    ctx.body = {code: 1, msg: 'ok', data:tn};
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,21 @@
+
+
+
+1.从后台   获取到token
+
+2.已知  domain
+
+3.向七牛发送
+
+  <input accept="image/jpeg,image/jpg,image/png" id="uploadFileInput" type="file" style="display: none">
+
+ //发起上传
+            var set = {
+                url: "http://up.qiniu.com",
+                data: formdata,
+                type: 'POST',
+                processData: false, //屏蔽掉ajax自动header处理
+                contentType: false, //屏蔽掉ajax自动header处理
+            };
+
+4.从success后七牛返回过来的 data中获取保存之后的 url
