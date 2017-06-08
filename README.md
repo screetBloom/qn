@@ -6,3 +6,9 @@
 参考：
 http://blog.csdn.net/netdxy/article/details/50507161
 修改七牛官网的demo
+
+
+
+1. 上传只需要 key(文件上传后用于查找的名字) 、token 、file 就可以了，当然还需要(http://upload.qiniu.com/) 和上传空间
+
+2. 只有当没有设置 key  时，才可以通过  hash 访问，一般都是domain+key ，即上传空间加key值
