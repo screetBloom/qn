@@ -21,4 +21,4 @@ http://blog.csdn.net/netdxy/article/details/50507161
 ### 像现在每天需要图床的时候，我会选择七牛直接上传，简单方便，另外几个案例都可以直接使用，下载下来就可以，里面的代码我都改过，样式也更好看一点，涉及到视频的话，与图片做相同处理，无任何区别（具体参考我的个人博客，均采用七牛）
 
 
-具体详情看个人博客，![点击here](https://screetbloom.github.io/)
+具体详情看个人博客，[点击here](https://screetbloom.github.io/)
